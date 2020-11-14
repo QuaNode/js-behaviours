@@ -1,18 +1,18 @@
 {
-    "name": "node-behaviours",
+    "name": "js-behaviours",
     "version": "1.0.0",
-    "description": "node-behaviours",
+    "description": "js-behaviours",
     "main": "index.js",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/QuaNode/node-behaviours.git"
+        "url": "git+https://github.com/QuaNode/js-behaviours.git"
     },
     "author": "quanode",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/QuaNode/node-behaviours/issues"
+        "url": "https://github.com/QuaNode/js-behaviours/issues"
     },
-    "homepage": "https://github.com/QuaNode/node-behaviours#readme",
+    "homepage": "https://github.com/QuaNode/js-behaviours#readme",
     "dependencies": {
         "axios": "latest"
     }

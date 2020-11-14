@@ -1,3 +1,3 @@
-# node-behaviours
+# js-behaviours
 
 NodeJS and browsers client for Behaviours
