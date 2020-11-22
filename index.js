@@ -80,7 +80,7 @@ var setParameterToCache = function (parameters, key) {
     }
 };
 
-export class Behaviours {
+class Behaviours {
 
     constructor(baseURL, errorCallback, defaults) {
 
@@ -99,7 +99,7 @@ export class Behaviours {
                 behavioursBody = response.data;
                 behavioursHeaders = {
 
-                    'Content-Type': response.headers.get('Content-Type')
+                    'Content-Type': response.headers['Content-Type']
                 };
                 if (typeof behavioursBody === 'object') {
 
@@ -243,7 +243,7 @@ export class Behaviours {
                                     var paramValue, paramKey;
                                     if (behaviour.returns[key].type === 'header')
                                         headers[paramKey = behaviour.returns[key].key || key] =
-                                            paramValue = resHeaders && resHeaders.get(key);
+                                            paramValue = resHeaders && resHeaders[key];
                                     if (behaviour.returns[key].type === 'body' && resBody &&
                                         typeof resBody.response === 'object' && !data[key])
                                         data[paramKey = key] = paramValue = resBody &&
@@ -292,11 +292,12 @@ export class Behaviours {
                                     return behaviour.returns[key].type === 'header';
                                 }).length > 0) {
 
-                                callback(Object.assign(headers, Object.keys(data).length === 0 ? {
+                                setTimeout(callback, 0, Object.assign(headers,
+                                    Object.keys(data).length === 0 ? {
 
-                                    data: resBody && resBody.response
-                                } : data));
-                            } else callback(resBody && resBody.response);
+                                        data: resBody && resBody.response
+                                    } : data));
+                            } else setTimeout(callback, 0, resBody && resBody.response);
                         }).catch(function (error) {
 
                             error = error.response || error;
@@ -305,7 +306,7 @@ export class Behaviours {
                                 ('Error status: ' + error.status));
                             err.code = error.status;
                             if (errorCallback) errorCallback(err);
-                            callback(null, err);
+                            setTimeout(callback, 0, null, err);
                         });
                     };
                     return request();
