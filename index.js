@@ -99,7 +99,7 @@ class Behaviours {
                 behavioursBody = response.data;
                 behavioursHeaders = {
 
-                    'Content-Type': response.headers['Content-Type']
+                    'Content-Type': response.headers['content-type']
                 };
                 if (typeof behavioursBody === 'object') {
 
@@ -243,7 +243,7 @@ class Behaviours {
                                     var paramValue, paramKey;
                                     if (behaviour.returns[key].type === 'header')
                                         headers[paramKey = behaviour.returns[key].key || key] =
-                                            paramValue = resHeaders && resHeaders[key];
+                                            paramValue = resHeaders && resHeaders[key.toLowerCase()];
                                     if (behaviour.returns[key].type === 'body' && resBody &&
                                         typeof resBody.response === 'object' && !data[key])
                                         data[paramKey = key] = paramValue = resBody &&
