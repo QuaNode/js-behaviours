@@ -317,4 +317,17 @@ class Behaviours {
 }
 
 if (typeof window === 'object') window.Behaviours = Behaviours;
-else module.exports = Behaviours;
+else {
+
+    Behaviours.prototype.setCache = function (cache) {
+
+        if (!global._sourceStorage) global._sourceStorage = sourceStorage;
+        if (typeof cache === 'object') sourceStorage = cache;
+        else sourceStorage = global._sourceStorage;
+    };
+    Behaviours.prototype.getCache = function () {
+
+        return global.localStorage;
+    };
+    module.exports = Behaviours;
+}
