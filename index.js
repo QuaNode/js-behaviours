@@ -219,7 +219,8 @@ class Behaviours {
                         var request_url = (typeof baseURL === 'string' && baseURL.length > 0 ?
                             typeof baseURL.split('/')[0] === 'string' &&
                                 baseURL.split('/')[0].startsWith('http') ? baseURL :
-                                global.location.origin + baseURL : '') + url
+                                global.location.origin + baseURL : '') + url;
+                        var cache = sourceStorage;
                         http.request({
 
                             method: request_method,
@@ -253,6 +254,8 @@ class Behaviours {
                                     var purposes = behaviour.returns[key].purpose;
                                     if (purposes && paramValue && paramKey) {
 
+                                        var _cache = sourceStorage;
+                                        sourceStorage = cache;
                                         if (!Array.isArray(purposes))
                                             purposes = behaviour.returns[key].purpose = [purposes];
                                         for (var index in purposes) {
@@ -288,6 +291,7 @@ class Behaviours {
                                                     break;
                                             }
                                         }
+                                        sourceStorage = _cache;
                                     }
                                     return behaviour.returns[key].type === 'header';
                                 }).length > 0) {
