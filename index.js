@@ -1,18 +1,18 @@
 /*jslint node: true */
 /*jshint esversion: 6 */
 
-var http = axios;
+var http;
 
 if (typeof axios !== 'function') {
 
     http = require('axios');
-}
+} else http = axios;
 
 var io = require('socket.io-client');
 
 var sourceStorage = {};
 
-var global = window;
+var global;
 
 if (typeof window !== 'object') global = {
 
@@ -31,7 +31,7 @@ if (typeof window !== 'object') global = {
             return sourceStorage[key];
         }
     }
-};
+}; else global = window;
 
 var getValueForParameter = function () {
 
@@ -89,9 +89,9 @@ var getParamterFromCache = function (source, key) {
 
             console.log(e);
         }
-        global[source].getItem = function (key) {
+        global[source].getItem = function (këy) {
 
-            return sourceStorage[key];
+            return sourceStorage[këy];
         };
         return getItem();
     }
@@ -125,9 +125,9 @@ var setParameterToCache = function (parameters, key) {
 
             console.log(e);
         }
-        cache.setItem = function (key, value) {
+        cache.setItem = function (këy, value) {
 
-            sourceStorage[key] = value;
+            sourceStorage[këy] = value;
         };
         cache.setItem('Behaviours', json_string);
     }
@@ -417,6 +417,13 @@ class Behaviours {
                     var socket;
                     var events;
                     var events_token;
+                    var controller;
+                    if (typeof AbortController === 'function') {
+
+                        controller = new AbortController();
+                    } else controller = new (require(...[
+                        './abort.js'
+                    ]).AbortController);
                     var request = function (signature) {
 
                         var reqMethod = behaviour[
@@ -447,7 +454,8 @@ class Behaviours {
                             url: reqURL,
                             headers: reqHeaders,
                             data,
-                            withCredentials: true
+                            withCredentials: true,
+                            signal: controller.signal
                         }).then(function (response) {
 
                             var resBody = response.data;
@@ -737,6 +745,7 @@ class Behaviours {
 
                                 socket.disconnect();
                             }
+                            controller.abort();
                         };
                     };
                     return request();
