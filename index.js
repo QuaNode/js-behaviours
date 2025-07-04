@@ -42,8 +42,10 @@ var getValueForParameter = function () {
 
         not_cached &= data[key] !== undefined;
     }
-    if (not_cached) return data[key];
-    else return function () {
+    if (not_cached) {
+
+        return data[key];
+    } else return function () {
 
         if (parameter.value) {
 
@@ -284,7 +286,8 @@ class Behaviours {
 
                     var [
                         behaviourData,
-                        callback
+                        callback,
+                        behaviourParameters
                     ] = arguments;
                     var typeOfD = typeof behaviourData;
                     if (typeOfD !== 'object') {
@@ -297,16 +300,19 @@ class Behaviours {
                         ]),
                         defaults || {}
                     ]);
+                    var bPs = Object.assign(...[
+                        {},
+                        behaviour.parameters,
+                        behaviourParameters
+                    ]);
                     var params = Object.keys(...[
-                        behaviour.parameters || {}
+                        bPs
                     ]).reduce(function (params, key) {
 
                         params[key] = parameters[key];
                         if (!params[key]) {
 
-                            params[key] = behaviour[
-                                'parameters'
-                            ][key];
+                            params[key] = bPs[key];
                         }
                         return params;
                     }, {});
