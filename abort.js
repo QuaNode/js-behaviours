@@ -52,7 +52,7 @@ var AbortSignal = function () {
     };
 };
 
-var AbortController = function () {
+var AbortController = function (source) {
 
     this.signal = new AbortSignal();
     this.abort = function () {
@@ -63,6 +63,7 @@ var AbortController = function () {
         }
         this.signal.aborted = true;
         this.signal.dispatchEvent("abort");
+        if (source) source.cancel();
     };
     this.toString = function () {
 

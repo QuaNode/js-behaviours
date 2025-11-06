@@ -424,12 +424,22 @@ class Behaviours {
                     var events;
                     var events_token;
                     var controller;
+                    var cancelToken;
                     if (typeof AbortController === 'function') {
 
                         controller = new AbortController();
                     } else controller = new (require(...[
                         './abort.js'
-                    ]).AbortController);
+                    ]).AbortController)(function () {
+
+                        var source;
+                        if (http.CancelToken) {
+
+                            source = http.CancelToken.source();
+                            cancelToken = source.token;
+                        }
+                        return source;
+                    }());
                     var request = function (signature) {
 
                         var reqMethod = behaviour[
@@ -461,7 +471,8 @@ class Behaviours {
                             headers: reqHeaders,
                             data,
                             withCredentials: true,
-                            signal: controller.signal
+                            signal: controller.signal,
+                            cancelToken
                         }).then(function (response) {
 
                             var resBody = response.data;
