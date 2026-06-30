@@ -6,6 +6,7 @@ var http;
 if (typeof axios !== 'function') {
 
     http = require('axios');
+    http = http.default || http;
 } else http = axios;
 
 var io = require('socket.io-client');
@@ -289,6 +290,10 @@ class Behaviours {
                         callback,
                         behaviourParameters
                     ] = arguments;
+                    if (behaviourName === 'behaviours') {
+
+                        return callback(behavioursBody);
+                    }
                     var typeOfD = typeof behaviourData;
                     if (typeOfD !== 'object') {
 
